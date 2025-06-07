@@ -16,14 +16,14 @@ $textboxFolderPath.Size = New-Object System.Drawing.Size(180,20)
 #----------------------------------------------------------------------
 $groupbox2 = New-Object System.Windows.Forms.GroupBox
 
-$checkboxCompress = New-Object System.Windows.Forms.CheckBox
-$checkboxCompress.Text = "Compress"
-$checkboxCompress.Checked = $true
-$checkboxCompress.Location = New-Object System.Drawing.Point(10,10)
-$checkboxCompress.Size = New-Object System.Drawing.Size(80,20)
+# $checkboxCompress = New-Object System.Windows.Forms.CheckBox
+# $checkboxCompress.Text = "Coooooompress"
+# $checkboxCompress.Checked = $true
+# $checkboxCompress.Location = New-Object System.Drawing.Point(10,10)
+# $checkboxCompress.Size = New-Object System.Drawing.Size(80,20)
 
 $checkboxResize = New-Object System.Windows.Forms.CheckBox
-$checkboxResize.Text = "Resize"
+$checkboxResize.Text = "720p"
 $checkboxResize.Location = New-Object System.Drawing.Point(100,10)
 $checkboxResize.Size = New-Object System.Drawing.Size(80,20)
 
@@ -31,6 +31,9 @@ $checkboxSpeed = New-Object System.Windows.Forms.CheckBox
 $checkboxSpeed.Text = "Speed"
 $checkboxSpeed.Location = New-Object System.Drawing.Point(180,10)
 $checkboxSpeed.Size = New-Object System.Drawing.Size(80,20)
+$checkboxSpeed.Add_Click({
+    $textboxSpeed.Visible = !$textboxSpeed.Visible
+})
 
 $groupbox2.Controls.AddRange($checkboxCompress, $checkboxResize, $checkboxSpeed)
 $groupbox2.Location = New-Object System.Drawing.Point(10,40)
@@ -53,9 +56,10 @@ $labelSpeed.Location = New-Object System.Drawing.Point(10,10)
 $labelSpeed.Size = New-Object System.Drawing.Size(100,20)
 
 $textboxSpeed = New-Object System.Windows.Forms.TextBox
-$textboxSpeed.Text = "1.3"
+$textboxSpeed.Text = "1.0"
 $textboxSpeed.Location = New-Object System.Drawing.Point(120,10)
 $textboxSpeed.Size = New-Object System.Drawing.Size(80,20)
+$textboxSpeed.Visible = $false
 
 $groupbox3.Controls.AddRange($labelSpeed, $textboxSpeed)
 $groupbox3.Location = New-Object System.Drawing.Point(10,80)
@@ -89,27 +93,24 @@ $miBoton.Add_Click({
         $rapidez = $textboxSpeed.Text
         # ffmpeg -i $inputFile -c:v libx265 -crf 28 -preset medium -vf "scale=1280:720" -c:a copy $outputFile
         # $ffmpegCommand = "ffmpeg -i $inputFile -vf `"scale=1280:720,setpts=PTS/1.4`" -af `"atempo=1.4`" -c:v libx265 -crf 28 -preset medium -c:a aac -b:a 128k $outputFile"
-        $ffmpegCommand = "ffmpeg -i $inputFile -vf `"scale=1280:720,setpts=PTS/$rapidez`" -af `"atempo=$rapidez`" -c:v libx265 -crf 28 -preset medium -c:a aac -b:a 128k $outputFile"
+        $ffmpegCommand = "ffmpeg -i $inputFile -vf `"scale=1920:1080,setpts=PTS/$rapidez`" -af `"atempo=$rapidez`" -c:v libx265 -crf 28 -preset medium -c:a aac -b:a 128k $outputFile"
 
-        if($checkboxCompress.Checked -eq $false){
-            $ffmpegCommand = $ffmpegCommand.Replace(" -crf 28 -preset medium", "")
+        # if($checkboxCompress.Checked -eq $false){
+        #     # $ffmpegCommand = $ffmpegCommand.Replace(" -crf 28 -preset medium", "")
+        #     $ffmpegCommand = $ffmpegCommand.Replace(" -vf `"scale=1280:720,setpts=PTS/$rapidez`" -af `"atempo=$rapidez`"", "")
+        # }
+        if($checkboxResize.Checked -eq $true){
+            $ffmpegCommand = $ffmpegCommand.Replace("scale=1920:1080,","scale=1280:720,")
         }
-        if($checkboxResize.Checked -eq $false -and $checkboxSpeed.Checked -eq $false){
-            $ffmpegCommand = $ffmpegCommand.Replace(" -vf `"scale=1280:720,setpts=PTS/1.4`" -af `"atempo=1.4`"", "")
+        if($checkboxSpeed.Checked -eq $false){
+            $ffmpegCommand = $ffmpegCommand.Replace(",setpts=PTS/$rapidez`" -af `"atempo=$rapidez", "")
         }
-        elseif($checkboxResize.Checked -eq $false){
-            $ffmpegCommand = $ffmpegCommand.Replace("scale=1280:720,", "")
-        }
-        elseif($checkboxSpeed.Checked -eq $false){
-            $ffmpegCommand = $ffmpegCommand.Replace(",setpts=PTS/1.4`" -af `"atempo=1.4", "")
-        }
-        
         Invoke-Expression $ffmpegCommand
     }
     [System.Media.SystemSounds]::Exclamation.Play()
     # Show popup message
     # [System.Windows.Forms.MessageBox]::Show($ffmpegCommand, "Información", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
-    $ffmpegCommand | Set-Clipboard
+    # $ffmpegCommand | Set-Clipboard
     $labelMensaje.Text = "termino..."
 })
 
