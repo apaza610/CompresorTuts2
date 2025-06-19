@@ -12,6 +12,7 @@ $labelFolderPath.Text = "FolderPath"
 $textboxFolderPath = New-Object System.Windows.Forms.TextBox
 $textboxFolderPath.Location = New-Object System.Drawing.Point(80,10)
 $textboxFolderPath.Size = New-Object System.Drawing.Size(180,20)
+$textboxFolderPath.Text = "E:\win\Videos\"
 
 #----------------------------------------------------------------------
 $groupbox2 = New-Object System.Windows.Forms.GroupBox
