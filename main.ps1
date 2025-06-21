@@ -89,7 +89,7 @@ $miBoton.Add_Click({
         $inputFile = $_.FullName
         $outputFile = Join-Path $outputFolder $_.Name
 
-        $labelMensaje.Text = "....."
+        $labelMensaje.Text = "$_.Name"
         Write-Output "Procesando file: $inputFile"
 
         $rapidez = $textboxSpeed.Text
