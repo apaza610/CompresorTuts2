@@ -108,6 +108,10 @@ $miBoton.Add_Click({
             $ffmpegCommand = $ffmpegCommand.Replace(",setpts=PTS/$rapidez`" -af `"atempo=$rapidez", "")
         }
         Invoke-Expression $ffmpegCommand
+
+        # cut/paste in parent folder
+        Move-Item -Path $outputFile -Destination $inputFile -Force
+        Remove-Item -Path $outputFolder -Recurse -Force
     }
     [System.Media.SystemSounds]::Exclamation.Play()
     # Show popup message
