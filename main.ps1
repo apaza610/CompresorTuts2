@@ -69,7 +69,7 @@ $groupbox3.Size = New-Object System.Drawing.Size(260,40)
 
 $labelMensaje = New-Object System.Windows.Forms.Label
 $labelMensaje.Location = New-Object System.Drawing.Point(10,140)
-$labelMensaje.Size = New-Object System.Drawing.Size(60,20)
+$labelMensaje.Size = New-Object System.Drawing.Size(150,20)
 $labelMensaje.Text = "....."
 
 $miBoton = New-Object System.Windows.Forms.Button
@@ -89,8 +89,8 @@ $miBoton.Add_Click({
         $inputFile = $_.FullName
         $outputFile = Join-Path $outputFolder $_.Name
 
-        $labelMensaje.Text = "$_.Name"
-        Write-Output "Procesando file: $inputFile"
+        $labelMensaje.Text = $inputFile[-20..-1] -join ''
+        Write-Output "----------------------------------------------Procesando file: $inputFile"
 
         $rapidez = $textboxSpeed.Text
         # ffmpeg -i $inputFile -c:v libx265 -crf 28 -preset medium -vf "scale=1280:720" -c:a copy $outputFile
