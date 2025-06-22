@@ -111,13 +111,14 @@ $miBoton.Add_Click({
 
         # cut/paste in parent folder
         Move-Item -Path $outputFile -Destination $inputFile -Force
-        Remove-Item -Path $outputFolder -Recurse -Force
     }
     [System.Media.SystemSounds]::Exclamation.Play()
     # Show popup message
     # [System.Windows.Forms.MessageBox]::Show($ffmpegCommand, "Información", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
     # $ffmpegCommand | Set-Clipboard
     $labelMensaje.Text = "termino..."
+    
+    Remove-Item -Path $outputFolder -Recurse -Force         # borrar el folder /salida
 })
 
 $miBoton.Location = New-Object System.Drawing.Point(160,130)
