@@ -85,7 +85,7 @@ $miBoton.Add_Click({
     }
 
 
-    Get-ChildItem -Path $inputFolder -Filter *.mp4 | ForEach-Object{
+    Get-ChildItem -Path $inputFolder -Recurse -Filter *.mp4 -File| ForEach-Object{
         $inputFile = $_.FullName
         $outputFile = Join-Path $outputFolder $_.Name
 
